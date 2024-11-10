@@ -49,7 +49,6 @@ public class CalculadoraSimple {
         }
 
         pantalla.setForeground(Color.YELLOW);
-        //pantalla.setText("-|   BIENVENIDO A CALCULADORA   |-");
         pantalla.setHorizontalAlignment(JTextField.RIGHT);
 
         // Creación de botones
