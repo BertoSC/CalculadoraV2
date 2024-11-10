@@ -153,22 +153,33 @@ public class CalculadoraSimple {
         but.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 String accion = e.getActionCommand();
-                if (accion.equals("+") || accion.equals("-") || accion.equals("*") || accion.equals("/")){
-                   primerNum = Integer.parseInt(pant.getText());
-                   operacionTipo=accion;
-                   pant.setText("");
-                } else if (accion.equals("C")){
-                   primerNum=0;
-                   segundoNum=0;
-                   operacionTipo="";
-                   pant.setText("");
-                } else {
-                    if (!pant.getText().isEmpty()){
-                        segundoNum = Integer.parseInt(pant.getText());
-                        realizarOperación(pant);
-                        operacionNueva = true;
+                try {
+
+                    if (accion.equals("+") || accion.equals("-") || accion.equals("*") || accion.equals("/")) {
+                        primerNum = Integer.parseInt(pant.getText());
+                        operacionTipo = accion;
+                        pant.setText("");
+                    } else if (accion.equals("C")) {
+                        primerNum = 0;
+                        segundoNum = 0;
+                        operacionTipo = "";
+                        pant.setText("");
+                    } else {
+                        if (!pant.getText().isEmpty()) {
+                            segundoNum = Integer.parseInt(pant.getText());
+                            realizarOperación(pant);
+                            operacionNueva = true;
+                            primerNum = segundoNum;
+                            segundoNum = 0;
+                            operacionTipo = "";
+                        }
                     }
+
+                }catch (NumberFormatException n){
+                    pant.setText("ERROR");
+                    operacionNueva = true;
                 }
             }
         });
