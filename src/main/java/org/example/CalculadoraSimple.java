@@ -23,7 +23,7 @@ public class CalculadoraSimple {
         this.operacionNueva = false;
         crearCalculadora();
     }
-
+    // c
     public void crearCalculadora () {
 
         // Creación de ventana
