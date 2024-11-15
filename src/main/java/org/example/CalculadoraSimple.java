@@ -1,6 +1,7 @@
 package org.example;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,6 +40,7 @@ public class CalculadoraSimple {
         JTextField pantalla = new JTextField();
         pantalla.setPreferredSize(new Dimension(500, 75));
         pantalla.setBackground(Color.DARK_GRAY);
+        pantalla.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         try {
             Font digitalFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/fonts/digital-7.ttf")).deriveFont(25f);
@@ -148,35 +150,43 @@ public class CalculadoraSimple {
 
     // método para dar acciones a los botones de operaciones y control de pantalla
 
-    private void agregarAccionGeneral (JButton but, JTextField pant){
+    private void agregarAccionGeneral(JButton but, JTextField pant) {
         but.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 String accion = e.getActionCommand();
                 try {
-
                     if (accion.equals("+") || accion.equals("-") || accion.equals("*") || accion.equals("/")) {
-                        primerNum = Integer.parseInt(pant.getText());
+
+                        if (!operacionTipo.isEmpty() && !pant.getText().isEmpty() && !operacionNueva) {
+                            segundoNum = Integer.parseInt(pant.getText());
+                            realizarOperación(pant);
+                            primerNum = Integer.parseInt(pant.getText());
+                        } else {
+                            if (!pant.getText().isEmpty()) {
+                                primerNum = Integer.parseInt(pant.getText());
+                            }
+                        }
+
                         operacionTipo = accion;
-                        pant.setText("");
+                        operacionNueva = true;
+
                     } else if (accion.equals("C")) {
                         primerNum = 0;
                         segundoNum = 0;
                         operacionTipo = "";
                         pant.setText("");
-                    } else {
-                        if (!pant.getText().isEmpty()) {
+
+                    } else if (accion.equals("=")) {
+                        if (!pant.getText().isEmpty() && !operacionTipo.isEmpty() && !operacionNueva) {
                             segundoNum = Integer.parseInt(pant.getText());
                             realizarOperación(pant);
                             operacionNueva = true;
-                            primerNum = segundoNum;
-                            segundoNum = 0;
                             operacionTipo = "";
                         }
                     }
 
-                }catch (NumberFormatException n){
+                } catch (NumberFormatException n) {
                     pant.setText("ERROR");
                     operacionNueva = true;
                 }
@@ -184,31 +194,32 @@ public class CalculadoraSimple {
         });
     }
 
+
     // método para hacer los cálculos matemáticos
 
     private void realizarOperación(JTextField pant){
         switch (operacionTipo){
             case "+":
-            pant.setText(String.valueOf(primerNum+segundoNum));
-            break;
+                pant.setText(String.valueOf(primerNum+segundoNum));
+                break;
 
             case "-":
-            pant.setText(String.valueOf(primerNum-segundoNum));
-            break;
+                pant.setText(String.valueOf(primerNum-segundoNum));
+                break;
 
             case "*":
-            pant.setText(String.valueOf(primerNum*segundoNum));
-            break;
+                pant.setText(String.valueOf(primerNum*segundoNum));
+                break;
 
             case "/":
-            if (segundoNum==0){
-                pant.setText("ERROR");
-                break;
-            } else {
+                if (segundoNum==0){
+                    pant.setText("ERROR");
+                    break;
+                } else {
 
-                pant.setText(String.valueOf(primerNum / segundoNum));
-                break;
-            }
+                    pant.setText(String.valueOf(primerNum / segundoNum));
+                    break;
+                }
         }
     }
 
